@@ -32,6 +32,17 @@ const seedData = {
       salt: 'demo-salt',
       passwordHash: DEMO_HASH,
       createdAt: '2026-07-23T00:00:00.000Z'
+    },
+    {
+      id: 'client-demo-1',
+      role: 'client',
+      name: 'Cliente Demo',
+      email: 'cliente@demo.com',
+      phone: '7121234567',
+      provider: 'email',
+      salt: 'demo-salt',
+      passwordHash: DEMO_HASH,
+      createdAt: '2026-07-23T00:00:00.000Z'
     }
   ],
   appointments: [],
@@ -42,12 +53,14 @@ function ensureDatabase() {
   if (!fs.existsSync(DATA_DIR)) {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
-  // Reescribe el archivo con datos limpios
-  fs.writeFileSync(DATA_FILE, JSON.stringify(seedData, null, 2));
 }
 
 function readData() {
   ensureDatabase();
+  if (!fs.existsSync(DATA_FILE)) {
+    fs.writeFileSync(DATA_FILE, JSON.stringify(seedData, null, 2));
+    return seedData;
+  }
   try {
     const content = fs.readFileSync(DATA_FILE, 'utf8');
     const data = JSON.parse(content);
