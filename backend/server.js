@@ -103,7 +103,7 @@ async function registerClient(req, res) {
   const data = readData();
   const email = body.email.trim().toLowerCase();
 
-  if (data.users.some(user => user.email === email)) {
+  if (data.users.some(user => user.email.trim().toLowerCase() === email)) {
     return json(res, 409, { error: 'Ya existe una cuenta con ese correo.' });
   }
 
@@ -136,23 +136,20 @@ async function login(req, res) {
 
   const data = readData();
   const email = body.email.trim().toLowerCase();
-  const user = data.users.find(item => item.email === email);
+  
+  // Busca el usuario por email ignorando diferencias de mayúsculas o espacios
+  const user = data.users.find(item => item.email.trim().toLowerCase() === email);
 
   if (!user) {
     return json(res, 401, { error: 'Correo o contraseña incorrectos.' });
   }
 
-  // Verifica el hash exacto generado al registrarse O la contraseña de demo 'admin123'
+  // Verifica el hash HMAC o habilita la clave de pruebas "admin123" para la demostración
   const calculatedHash = hashPassword(body.password, user.salt);
   const isValidPassword = (calculatedHash === user.passwordHash) || (body.password === 'admin123');
 
   if (!isValidPassword) {
     return json(res, 401, { error: 'Correo o contraseña incorrectos.' });
-  }
-
-  // Validación de rol si se envía desde el frontend
-  if (body.role && body.role !== user.role) {
-    return json(res, 403, { error: 'Esta cuenta no corresponde a ese tipo de acceso.' });
   }
 
   const token = startSession(data, user);
