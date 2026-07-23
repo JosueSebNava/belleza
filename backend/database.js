@@ -40,6 +40,7 @@ function ensureDatabase() {
     fs.mkdirSync(DATA_DIR, { recursive: true });
   }
 
+  // Si el archivo no existe o está vacío, crea o inicializa el JSON con el seedData correcto
   if (!fs.existsSync(DATA_FILE)) {
     fs.writeFileSync(DATA_FILE, JSON.stringify(seedData, null, 2));
   }
@@ -47,12 +48,17 @@ function ensureDatabase() {
 
 function readData() {
   ensureDatabase();
-  const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
-  return {
-    users: Array.isArray(data.users) ? data.users : [],
-    appointments: Array.isArray(data.appointments) ? data.appointments : [],
-    sessions: Array.isArray(data.sessions) ? data.sessions : []
-  };
+  try {
+    const data = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    return {
+      users: Array.isArray(data.users) && data.users.length > 0 ? data.users : seedData.users,
+      appointments: Array.isArray(data.appointments) ? data.appointments : [],
+      sessions: Array.isArray(data.sessions) ? data.sessions : []
+    };
+  } catch (err) {
+    // Si hay un error al leer el JSON, retorna los datos iniciales
+    return seedData;
+  }
 }
 
 function writeData(data) {
