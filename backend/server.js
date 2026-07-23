@@ -103,7 +103,7 @@ async function registerClient(req, res) {
   const data = readData();
   const email = body.email.trim().toLowerCase();
 
-  if (data.users.some(user => user.email.trim().toLowerCase() === email)) {
+  if (data.users.some(user => user.email === email)) {
     return json(res, 409, { error: 'Ya existe una cuenta con ese correo.' });
   }
 
@@ -137,14 +137,22 @@ async function login(req, res) {
   const data = readData();
   const email = body.email.trim().toLowerCase();
   
-  // Busca el usuario por email ignorando diferencias de mayúsculas o espacios
-  const user = data.users.find(item => item.email.trim().toLowerCase() === email);
+  // 1. Si el frontend envía un rol específico (client o staff), busca respetando ese rol.
+  // Si no se especifica rol, busca cualquier usuario con ese correo.
+  let user;
+  if (body.role) {
+    user = data.users.find(
+      item => item.email.trim().toLowerCase() === email && item.role === body.role
+    );
+  } else {
+    user = data.users.find(item => item.email.trim().toLowerCase() === email);
+  }
 
   if (!user) {
     return json(res, 401, { error: 'Correo o contraseña incorrectos.' });
   }
 
-  // Verifica el hash HMAC o habilita la clave de pruebas "admin123" para la demostración
+  // 2. Validación de contraseña (HMAC hash o contraseña demo)
   const calculatedHash = hashPassword(body.password, user.salt);
   const isValidPassword = (calculatedHash === user.passwordHash) || (body.password === 'admin123');
 
@@ -152,6 +160,7 @@ async function login(req, res) {
     return json(res, 401, { error: 'Correo o contraseña incorrectos.' });
   }
 
+  // 3. Crear sesión conservando intacto el rol original del usuario (staff permanece staff, client permanece client)
   const token = startSession(data, user);
   writeData(data);
 
