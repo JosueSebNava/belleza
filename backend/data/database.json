@@ -8,7 +8,7 @@
       "phone": "",
       "provider": "email",
       "salt": "demo-salt",
-      "passwordHash": "c5d4ef83c31e9c2dd9bc19c961e5f80bfb9f69bdfa83d739818db2674e7cf4cb",
+      "passwordHash": "f0a20a672322df723825313a2bb6bfdf4b6dc9b8c0e2a3c7136fbd8cfef3d688",
       "createdAt": "2026-07-23T00:00:00.000Z"
     },
     {
@@ -19,7 +19,7 @@
       "phone": "",
       "provider": "email",
       "salt": "demo-salt",
-      "passwordHash": "64a4c6ea47d96a73c1c73a4b00ca32eb00b3e77a28e75fa98cd5d5543d839352",
+      "passwordHash": "da785672a9df559cfa5ef39eb38c5b9f71c4c95f190bc1f4dbec83a3ceee1d5d",
       "createdAt": "2026-07-23T00:00:00.000Z"
     }
   ],
