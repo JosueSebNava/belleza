@@ -2,7 +2,7 @@
   "users": [
     {
       "id": "staff-1",
-      "role": "staff",
+      "role": "admin",
       "name": "Josué Sebastián",
       "email": "navarretegarciasebas43@gmail.com",
       "phone": "",
@@ -13,7 +13,7 @@
     },
     {
       "id": "staff-2",
-      "role": "staff",
+      "role": "admin",
       "name": "Liz",
       "email": "lizgargarram@gmail.com",
       "phone": "",
