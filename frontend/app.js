@@ -3,7 +3,7 @@ const state = {
   token: localStorage.getItem('beauty_token') || ''
 };
 
-const WHATSAPP_PHONE = '10000000000';
+const WHATSAPP_PHONE = '7121958642';
 const WHATSAPP_BASE_MESSAGE = 'Hola, quiero reservar una cita en Elohim Estudio de uñas y pestañas para';
 
 const els = {
