@@ -1,7 +1,8 @@
 const crypto = require('crypto');
 
 function hashPassword(password, salt) {
-  return crypto.createHmac('sha256', salt).update(password).digest('hex');
+  if (!password) return '';
+  return crypto.createHmac('sha256', salt || 'demo-salt').update(password).digest('hex');
 }
 
 function createPasswordHash(password) {
@@ -19,7 +20,7 @@ function getTokenFromRequest(req) {
 
 function startSession(data, user) {
   const token = crypto.randomBytes(32).toString('hex');
-  data.sessions = data.sessions.filter(session => session.userId !== user.id);
+  data.sessions = (data.sessions || []).filter(session => session.userId !== user.id);
   data.sessions.push({
     token,
     userId: user.id,
@@ -31,7 +32,7 @@ function startSession(data, user) {
 
 function endSession(data, token) {
   if (!token) return;
-  data.sessions = data.sessions.filter(session => session.token !== token);
+  data.sessions = (data.sessions || []).filter(session => session.token !== token);
 }
 
 function publicUser(user) {
