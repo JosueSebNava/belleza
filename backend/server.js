@@ -142,7 +142,7 @@ async function login(req, res) {
     return json(res, 401, { error: 'Correo o contraseña incorrectos.' });
   }
 
-  // Validación flexible: Compara el hash HMAC o permite "admin123" para pruebas
+  // Verifica el hash exacto generado al registrarse O la contraseña de demo 'admin123'
   const calculatedHash = hashPassword(body.password, user.salt);
   const isValidPassword = (calculatedHash === user.passwordHash) || (body.password === 'admin123');
 
@@ -150,6 +150,7 @@ async function login(req, res) {
     return json(res, 401, { error: 'Correo o contraseña incorrectos.' });
   }
 
+  // Validación de rol si se envía desde el frontend
   if (body.role && body.role !== user.role) {
     return json(res, 403, { error: 'Esta cuenta no corresponde a ese tipo de acceso.' });
   }
