@@ -11,8 +11,19 @@ const seedData = {
     {
       id: 'staff-1',
       role: 'staff',
-      name: 'Recepción Studio',
-      email: 'staff@local.com',
+      name: 'Josué Sebastián',
+      email: 'navarretegarciasebas43@gmail.com',
+      phone: '',
+      provider: 'email',
+      salt: 'demo-salt',
+      passwordHash: 'e38fb497744af929f8ecff05638c8711921fd6f5a001a5c42004fe093b61d295',
+      createdAt: '2026-07-23T00:00:00.000Z'
+    },
+    {
+      id: 'staff-2',
+      role: 'staff',
+      name: 'Liz',
+      email: 'lizgargarram@gmail.com',
       phone: '',
       provider: 'email',
       salt: 'demo-salt',
